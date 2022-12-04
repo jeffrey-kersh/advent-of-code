@@ -1,5 +1,17 @@
 import os, sys
 
+def get_badge(elf_one, elf_two, elf_three):
+    common_items = []
+    for item in elf_one:
+        for other_item in elf_two:
+            if item == other_item:
+                common_items.append(item)
+    for item in elf_three:
+        for other_item in common_items:
+            if item == other_item:
+                badge = item
+    return badge
+
 # list priorities
 priority_dict = {
     "a": 1,
@@ -78,4 +90,24 @@ for rucksack in rucksack_data:
         if f_item == b_item:
             break
 
-print(priorities_sum)
+print('Part 1 Sum: ' + str(priorities_sum))
+
+# get group data
+group_priorities_sum = 0
+i = 0
+group_first_indeces = []
+
+while i < len(rucksack_data):
+    group_first_indeces.append(i)
+    i = i + 3
+
+x = 1
+for group in group_first_indeces:
+    elf_one = rucksack_data[group].strip()
+    elf_two = rucksack_data[group + 1].strip()
+    elf_three = rucksack_data[group + 2].strip()
+    badge = get_badge(elf_one, elf_two, elf_three)
+    priority = priority_dict[badge]
+    group_priorities_sum = group_priorities_sum + priority
+
+print('Part 2 Sum: ' + str(group_priorities_sum))
